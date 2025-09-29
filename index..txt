@@ -1,0 +1,419 @@
+```jsx
+import React, { useState } from 'react';
+import { Heart, Star, Calendar, Users, Award, Search, Menu, X, Sun, Snowflake, Leaf, Wheat, Fish } from 'lucide-react';
+
+const App = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [selectedSeason, setSelectedSeason] = useState('spring');
+
+  // Mock data for crops
+  const crops = {
+    spring: [
+      { id: 1, name: '防风草', days: 4, price: 35, image: 'https://placehold.co/200x200/f0f9ff/0369a1?text=ParSNip', season: 'spring' },
+      { id: 2, name: '土豆', days: 6, price: 80, image: 'https://placehold.co/200x200/fef3c7/d97706?text=Potato', season: 'spring' },
+      { id: 3, name: '花椰菜', days: 12, price: 175, image: 'https://placehold.co/200x200/fce7f3/be185d?text=Cauliflower', season: 'spring' },
+      { id: 4, name: '大蒜', days: 4, price: 60, image: 'https://placehold.co/200x200/f3e8ff/7c3aed?text=Garlic', season: 'spring' }
+    ],
+    summer: [
+      { id: 5, name: '番茄', days: 11, price: 60, image: 'https://placehold.co/200x200/fecaca/dc2626?text=Tomato', season: 'summer' },
+      { id: 6, name: '蓝莓', days: 13, price: 50, image: 'https://placehold.co/200x200/e0f2fe/0284c7?text=Blueberry', season: 'summer' },
+      { id: 7, name: '辣椒', days: 5, price: 40, image: 'https://placehold.co/200x200/fef3c7/d97706?text=Hot+Pepper', season: 'summer' },
+      { id: 8, name: '玉米', days: 14, price: 50, image: 'https://placehold.co/200x200/fef9c3/ca8a04?text=Corn', season: 'summer' }
+    ],
+    fall: [
+      { id: 9, name: '南瓜', days: 13, price: 320, image: 'https://placehold.co/200x200/fef3c7/d97706?text=Pumpkin', season: 'fall' },
+      { id: 10, name: '蔓越莓', days: 7, price: 75, image: 'https://placehold.co/200x200/fecaca/dc2626?text=Cranberries', season: 'fall' },
+      { id: 11, name: '葡萄', days: 10, price: 80, image: 'https://placehold.co/200x200/f0abfc/a21caf?text=Grapes', season: 'fall' },
+      { id: 12, name: '向日葵', days: 8, price: 80, image: 'https://placehold.co/200x200/fef9c3/ca8a04?text=Sunflower', season: 'fall' }
+    ],
+    winter: [
+      { id: 13, name: '冬季种子', days: 7, price: 60, image: 'https://placehold.co/200x200/e2e8f0/475569?text=Winter+Seeds', season: 'winter' },
+      { id: 14, name: '雪花洋', days: 10, price: 120, image: 'https://placehold.co/200x200/f1f5f9/0f172a?text=Snow+Yam', season: 'winter' },
+      { id: 15, name: '水晶水果', days: 7, price: 150, image: 'https://placehold.co/200x200/f8fafc/1e293b?text=Crystal+Fruit', season: 'winter' },
+      { id: 16, name: '冬青树', days: 10, price: 80, image: 'https://placehold.co/200x200/f0fdf4/16a34a?text=Holly', season: 'winter' }
+    ]
+  };
+
+  // Mock data for villagers
+  const villagers = [
+    { id: 1, name: '阿比盖尔', gift: '石英', heart: 10, image: 'https://placehold.co/150x150/f0f9ff/0369a1?text=Abigail', relationship: '友好' },
+    { id: 2, name: '艾利克斯', gift: '运动用品', heart: 8, image: 'https://placehold.co/150x150/fecaca/dc2626?text=Alex', relationship: '普通' },
+    { id: 3, name: '卡洛琳', gift: '海鲜', heart: 9, image: 'https://placehold.co/150x150/f0fdf4/16a34a?text=Caroline', relationship: '友好' },
+    { id: 4, name: '克林特', gift: '煤炭', heart: 7, image: 'https://placehold.co/150x150/f3e8ff/7c3aed?text=Clint', relationship: '普通' },
+    { id: 5, name: '塞巴斯蒂安', gift: '咖啡', heart: 9, image: 'https://placehold.co/150x150/1e293b/f1f5f9?text=Sebastian', relationship: '友好' },
+    { id: 6, name: '山姆', gift: '披萨', heart: 8, image: 'https://placehold.co/150x150/fef3c7/d97706?text=Sam', relationship: '普通' }
+  ];
+
+  const seasons = [
+    { id: 'spring', name: '春季', icon: Sun, color: 'from-green-400 to-emerald-500' },
+    { id: 'summer', name: '夏季', icon: Sun, color: 'from-yellow-400 to-orange-500' },
+    { id: 'fall', name: '秋季', icon: Leaf, color: 'from-orange-400 to-red-500' },
+    { id: 'winter', name: '冬季', icon: Snowflake, color: 'from-blue-400 to-cyan-500' }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm sticky top-0 z-50">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <div className="flex items-center">
+              <Wheat className="w-8 h-8 text-green-600 mr-2" />
+              <h1 className="text-2xl font-bold text-gray-900">星露谷物语指南</h1>
+            </div>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center space-x-8">
+              <a href="#home" className="text-gray-700 hover:text-green-600 font-medium">首页</a>
+              <a href="#crops" className="text-gray-700 hover:text-green-600 font-medium">作物指南</a>
+              <a href="#villagers" className="text-gray-700 hover:text-green-600 font-medium">村民</a>
+              <a href="#calendar" className="text-gray-700 hover:text-green-600 font-medium">日历</a>
+            </nav>
+
+            {/* Search and Menu */}
+            <div className="flex items-center space-x-4">
+              <div className="relative hidden md:block">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <input 
+                  type="text" 
+                  placeholder="搜索..." 
+                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-200 focus:border-transparent"
+                />
+              </div>
+              
+              {/* Mobile menu button */}
+              <button 
+                className="md:hidden p-2"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Navigation */}
+          {isMenuOpen && (
+            <div className="md:hidden py-4 border-t">
+              <div className="flex flex-col space-y-4">
+                <a href="#home" className="text-gray-700 hover:text-green-600 font-medium">首页</a>
+                <a href="#crops" className="text-gray-700 hover:text-green-600 font-medium">作物指南</a>
+                <a href="#villagers" className="text-gray-700 hover:text-green-600 font-medium">村民</a>
+                <a href="#calendar" className="text-gray-700 hover:text-green-600 font-medium">日历</a>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input 
+                    type="text" 
+                    placeholder="搜索..." 
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-200 focus:border-transparent"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section id="home" className="relative py-20 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white">
+        <div className="absolute inset-0 bg-black opacity-20"></div>
+        <div className="container mx-auto px-4 relative z-10 text-center">
+          <h2 className="text-4xl md:text-6xl font-bold mb-6">欢迎来到星露谷</h2>
+          <p className="text-xl md:text-2xl mb-8 text-green-100 max-w-3xl mx-auto">
+            开启你的农场冒险之旅！种植作物、结交朋友、探索洞穴，体验宁静的乡村生活。
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <button className="bg-white text-green-700 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
+              开始游戏
+            </button>
+            <button className="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-green-700 transition-colors">
+              查看指南
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div className="p-6">
+              <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Wheat className="w-8 h-8 text-green-600" />
+              </div>
+              <h3 className="text-3xl font-bold text-gray-900 mb-2">30+</h3>
+              <p className="text-gray-600">可种植作物</p>
+            </div>
+            <div className="p-6">
+              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-3xl font-bold text-gray-900 mb-2">30+</h3>
+              <p className="text-gray-600">可互动村民</p>
+            </div>
+            <div className="p-6">
+              <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Fish className="w-8 h-8 text-purple-600" />
+              </div>
+              <h3 className="text-3xl font-bold text-gray-900 mb-2">70+</h3>
+              <p className="text-gray-600">可钓鱼种类</p>
+            </div>
+            <div className="p-6">
+              <div className="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Award className="w-8 h-8 text-yellow-600" />
+              </div>
+              <h3 className="text-3xl font-bold text-gray-900 mb-2">100+</h3>
+              <p className="text-gray-600">成就奖杯</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Crops Section */}
+      <section id="crops" className="py-16 bg-gradient-to-br from-green-50 to-emerald-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-bold text-gray-900 mb-4">季节作物指南</h3>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              了解每个季节最适合种植的作物，最大化你的农场收益！
+            </p>
+          </div>
+
+          {/* Season Tabs */}
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
+            {seasons.map(season => {
+              const Icon = season.icon;
+              return (
+                <button
+                  key={season.id}
+                  onClick={() => setSelectedSeason(season.id)}
+                  className={`px-6 py-3 rounded-full font-medium transition-all ${
+                    selectedSeason === season.id
+                      ? `bg-gradient-to-r ${season.color} text-white shadow-lg`
+                      : 'bg-white text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  <Icon className="w-5 h-5 inline mr-2" />
+                  {season.name}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Crops Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {crops[selectedSeason].map(crop => (
+              <div key={crop.id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                <img 
+                  src={crop.image} 
+                  alt={crop.name}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-6">
+                  <h4 className="text-lg font-semibold mb-2">{crop.name}</h4>
+                  <div className="space-y-2 text-sm text-gray-600">
+                    <div className="flex items-center">
+                      <Calendar className="w-4 h-4 mr-2 text-green-600" />
+                      <span>生长天数: {crop.days}天</span>
+                    </div>
+                    <div className="flex items-center">
+                      <Star className="w-4 h-4 mr-2 text-yellow-500" />
+                      <span>售价: {crop.price}g</span>
+                    </div>
+                    <div className="flex items-center">
+                      <Leaf className="w-4 h-4 mr-2 text-green-500" />
+                      <span>季节: {
+                        selectedSeason === 'spring' ? '春季' : 
+                        selectedSeason === 'summer' ? '夏季' : 
+                        selectedSeason === 'fall' ? '秋季' : '冬季'
+                      }</span>
+                    </div>
+                  </div>
+                  <button className="w-full mt-4 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    添加到购物车
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Villagers Section */}
+      <section id="villagers" className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-bold text-gray-900 mb-4">星露谷村民</h3>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              与村民们建立友谊，了解他们的喜好和故事！
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {villagers.map(villager => (
+              <div key={villager.id} className="bg-gray-50 rounded-xl p-6 text-center hover:bg-gray-100 transition-colors">
+                <img 
+                  src={villager.image} 
+                  alt={villager.name}
+                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                />
+                <h4 className="text-lg font-semibold mb-2">{villager.name}</h4>
+                <div className="flex items-center justify-center mb-2">
+                  {[...Array(5)].map((_, i) => (
+                    <Heart 
+                      key={i}
+                      className={`w-4 h-4 ${
+                        i < Math.floor(villager.heart / 2) 
+                          ? 'text-red-500 fill-current' 
+                          : 'text-gray-300'
+                      }`}
+                    />
+                  ))}
+                  <span className="ml-2 text-sm text-gray-600">({villager.heart}/10)</span>
+                </div>
+                <div className="text-sm text-gray-600 mb-3">
+                  <span className={`px-2 py-1 rounded-full text-xs ${
+                    villager.relationship === '友好' 
+                      ? 'bg-green-100 text-green-800' 
+                      : 'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {villager.relationship}
+                  </span>
+                </div>
+                <div className="text-sm text-gray-600">
+                  <span className="font-medium">最爱礼物:</span> {villager.gift}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Calendar Section */}
+      <section id="calendar" className="py-16 bg-gradient-to-br from-purple-50 to-pink-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-bold text-gray-900 mb-4">星露谷日历</h3>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              规划你的农场生活，不错过任何节日和重要事件！
+            </p>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-lg p-8 max-w-4xl mx-auto">
+            <div className="grid grid-cols-7 gap-2 mb-4">
+              {['日', '一', '二', '三', '四', '五', '六'].map(day => (
+                <div key={day} className="text-center font-semibold text-gray-700 py-2">
+                  {day}
+                </div>
+              ))}
+            </div>
+            
+            <div className="grid grid-cols-7 gap-2">
+              {Array.from({ length: 28 }, (_, i) => (
+                <div 
+                  key={i} 
+                  className={`h-12 border rounded-lg flex items-center justify-center cursor-pointer hover:bg-green-50 transition-colors ${
+                    (i + 1) % 7 === 0 ? 'bg-red-50 border-red-200' : 'bg-white border-gray-200'
+                  }`}
+                >
+                  <span className="text-sm font-medium">{i + 1}</span>
+                  {(i + 1) === 13 && (
+                    <span className="absolute text-xs bg-yellow-100 text-yellow-800 px-1 rounded">鸡蛋节</span>
+                  )}
+                  {(i + 1) === 27 && (
+                    <span className="absolute text-xs bg-pink-100 text-pink-800 px-1 rounded">冰淇淋节</span>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-4 justify-center">
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-red-50 border border-red-200 rounded mr-2"></div>
+                <span className="text-sm text-gray-600">星期日</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-yellow-100 border border-yellow-200 rounded mr-2"></div>
+                <span className="text-sm text-gray-600">节日</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-blue-100 border border-blue-200 rounded mr-2"></div>
+                <span className="text-sm text-gray-600">冬季特殊</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-16 bg-gray-900 text-white">
+        <div className="container mx-auto px-4 text-center">
+          <h3 className="text-3xl font-bold mb-4">加入星露谷社区</h3>
+          <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
+            获取最新攻略、技巧分享和社区活动信息。与其他农场主一起交流经验！
+          </p>
+          <div className="max-w-md mx-auto flex">
+            <input 
+              type="email" 
+              placeholder="输入您的邮箱地址" 
+              className="flex-1 px-4 py-3 rounded-l-lg focus:outline-none bg-gray-800 text-white border border-gray-700"
+            />
+            <button className="bg-green-600 text-white px-6 py-3 rounded-r-lg font-semibold hover:bg-green-700 transition-colors">
+              订阅
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <div className="flex items-center mb-4">
+                <Wheat className="w-6 h-6 text-green-400 mr-2" />
+                <h4 className="text-xl font-bold">星露谷物语指南</h4>
+              </div>
+              <p className="text-gray-400">
+                最全面的星露谷物语攻略网站，助你成为最成功的农场主！
+              </p>
+            </div>
+            <div>
+              <h5 className="font-semibold mb-4">游戏指南</h5>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-white">作物种植</a></li>
+                <li><a href="#" className="hover:text-white">村民喜好</a></li>
+                <li><a href="#" className="hover:text-white">钓鱼指南</a></li>
+                <li><a href="#" className="hover:text-white">矿洞攻略</a></li>
+              </ul>
+            </div>
+            <div>
+              <h5 className="font-semibold mb-4">社区</h5>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-white">论坛</a></li>
+                <li><a href="#" className="hover:text-white">攻略分享</a></li>
+                <li><a href="#" className="hover:text-white">截图展示</a></li>
+                <li><a href="#" className="hover:text-white">活动日历</a></li>
+              </ul>
+            </div>
+            <div>
+              <h5 className="font-semibold mb-4">关于我们</h5>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-white">联系我们</a></li>
+                <li><a href="#" className="hover:text-white">贡献指南</a></li>
+                <li><a href="#" className="hover:text-white">隐私政策</a></li>
+                <li><a href="#" className="hover:text-white">使用条款</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+            <p>&copy; 2024 星露谷物语指南. 非官方粉丝网站. Stardew Valley 是 ConcernedApe 的注册商标.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
+```
